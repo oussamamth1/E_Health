@@ -3,7 +3,10 @@ package com.sem.e_health;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        changeStatusBarToWhite(this);
         mAuth = FirebaseAuth.getInstance();
         BtLogin = findViewById(R.id.imageView33);
         email = findViewById(R.id.edt_email);
@@ -80,5 +84,14 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    public static void changeStatusBarToWhite(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //  activity.getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN| View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            activity.getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            // edited here
+            activity.getWindow().setStatusBarColor(Color.rgb(255,255,255));
+
+        }
+    }
 
 }
