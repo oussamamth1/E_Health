@@ -2,6 +2,7 @@ package com.sem.e_health;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +12,15 @@ import com.google.firebase.database.DatabaseReference;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class RecAdapter extends RecyclerView.Adapter<RecAdapter.RecViewHolder> {
     private List<Test> list;
     Context Mycontext ;
+    public final String[] colorTab = {"#0096C7","#48CAE4", "#00B4D8"};
+    public static  int colorId = 0;
+
 
     public RecAdapter(Context mycontext,List<Test> list) {
         this.list = list;
@@ -26,7 +31,7 @@ public class RecAdapter extends RecyclerView.Adapter<RecAdapter.RecViewHolder> {
     public RecViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.test_item, parent, false);
+                .inflate(R.layout.test_item2, parent, false);
         return new RecViewHolder(view);
     }
 
@@ -61,6 +66,7 @@ public class RecAdapter extends RecyclerView.Adapter<RecAdapter.RecViewHolder> {
         private TextView emg;
         private TextView gluc;
         private View subItem;
+        private CardView cvItemHolder;
 
         public RecViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -71,7 +77,7 @@ public class RecAdapter extends RecyclerView.Adapter<RecAdapter.RecViewHolder> {
             subItem = itemView.findViewById(R.id.sub_item);
             emg= itemView.findViewById(R.id.sub_item_emg);
             gluc = itemView.findViewById(R.id.sub_item_gluc);
-
+            cvItemHolder = itemView.findViewById(R.id.cv_item_holder);
         }
 
 
@@ -86,6 +92,26 @@ public class RecAdapter extends RecyclerView.Adapter<RecAdapter.RecViewHolder> {
             hb.setText("Hart Beats: " + test.getHartbeats());
             emg.setText("EMG: "+test.getEmg());
             gluc.setText("Glucose: "+test.getGlucose()+" mg/dL");
+
+            cvItemHolder.setCardBackgroundColor(Color.parseColor(colorGenerator()));
         }
+    }
+    protected String colorGenerator(){
+        if (colorId>2)
+            colorId=0;
+
+        switch (colorId){
+            case 0:
+                colorId++;
+                return colorTab[0];
+            case 1:
+                colorId++;
+                return colorTab[1];
+            case 2:
+                colorId++;
+                return colorTab[2];
+            default: return null;
+        }
+
     }
 }

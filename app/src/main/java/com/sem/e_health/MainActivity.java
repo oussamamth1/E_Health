@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         if(currentUser != null){
 
             startActivity(new Intent(MainActivity.this,DoctorActivity.class));
+            finish();
         }
 
     }

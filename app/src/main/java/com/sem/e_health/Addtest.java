@@ -2,6 +2,8 @@ package com.sem.e_health;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,6 +23,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static com.sem.e_health.MainActivity.changeStatusBarToWhite;
+
 public class Addtest extends AppCompatActivity {
     List<Test> testList = new ArrayList<>();
     RecAdapter adapter ;
@@ -39,12 +43,15 @@ public class Addtest extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_addtest);
+        setContentView(R.layout.activity_patient_tests);
+        changeStatusBarToWhite(this);
         recyclerview = findViewById(R.id.RC1);
         enableSwipeToDeleteAndUndo();
 
         adapter = new RecAdapter(this,testList);
        ((SimpleItemAnimator) recyclerview.getItemAnimator()).setSupportsChangeAnimations(false);
+
+       findViewById(R.id.img_back).setOnClickListener(v -> finish());
 
 
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
@@ -114,12 +121,12 @@ public class Addtest extends AppCompatActivity {
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         String formattedDate = df.format(c);
         finalDate = formattedDate +" "+dateformatted ;
-        FloatingActionButton back = findViewById(R.id.back);
+        /*FloatingActionButton back = findViewById(R.id.back);
         back.setOnClickListener(v ->{
 
             startActivity(new Intent(Addtest.this,DoctorActivity.class));
         });
-
+*/
 
 
 

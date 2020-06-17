@@ -145,6 +145,7 @@ public class DoctorActivity extends AppCompatActivity implements ContactAdapter.
         intent.putExtra("lastname", listData.get(position).getLastName());
         intent.putExtra("docid", Sub());
         startActivity(intent);
+
     }
 
     @Override
