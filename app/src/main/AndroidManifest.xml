@@ -19,6 +19,7 @@
         <activity
             android:name=".DoctorActivity"
             android:label="@string/title_activity_doctor"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Registre" />
         <activity android:name=".MainActivity">

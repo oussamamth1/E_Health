@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 
 import com.google.firebase.database.DatabaseReference;
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -44,11 +46,17 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MiHolder
         String ch =client.getLastName() + " " +client.getName() ;
         holder.NomPrenom.setText(ch);
         holder.age.setText(client.getAge());
-
-
-
+        Picasso.get()
+                .load(client.getImageUri())
+                .into(holder.profilePhoto);
     }
-    public void removeItem(int position, DatabaseReference testRef) {
+    public void filterList(ArrayList<Client> filterdNames) {
+        this.MyList = filterdNames;
+        notifyDataSetChanged();
+    }
+
+
+        public void removeItem(int position, DatabaseReference testRef) {
         MyList.remove(position +1 );
         Client client = MyList.get((position));
         String nomP = client.getName() + " " + client.getLastName();
@@ -60,16 +68,19 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MiHolder
         notifyItemRemoved(position);
     }
 
+
     @Override
     public int getItemCount() {
         return MyList.size();
     }
 
+
+
     class MiHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView NomPrenom ;
         TextView phone ;
         TextView age ;
-        ImageView btnHistory, imgCall;
+        ImageView btnHistory, imgCall,profilePhoto;
 
 
         public MiHolder(@NonNull View itemView) {
@@ -79,6 +90,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MiHolder
             age= itemView.findViewById(R.id.agee);
             btnHistory = itemView.findViewById(R.id.btn_history);
             imgCall = itemView.findViewById(R.id.img_call);
+            profilePhoto = itemView.findViewById(R.id.img_profile);
             btnHistory.setOnClickListener(this);
             imgCall.setOnClickListener(this);
 

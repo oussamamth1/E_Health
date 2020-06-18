@@ -5,6 +5,7 @@ public class Client {
     private String lastName;
     private String phone;
     private String age;
+    private String imageUri;
 
     public Client(String name, String lastName, String phone, String age) {
         this.name = name;
@@ -12,9 +13,25 @@ public class Client {
         this.phone = phone;
         this.age = age;
     }
+    public Client(String name, String lastName, String phone, String age, String imageUri) {
+        this.name = name;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.age = age;
+        this.imageUri = imageUri;
+    }
 
     public Client() {
     }
+
+    public String getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
+    }
+    private String namaLastName;
 
     public String getName() {
         return name;
@@ -46,5 +63,10 @@ public class Client {
 
     public void setAge(String age) {
         this.age = age;
+    }
+
+    public String getnamaLastName() {
+        namaLastName =  lastName + " " + name ;
+        return namaLastName;
     }
 }
