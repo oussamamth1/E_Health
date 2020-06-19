@@ -10,15 +10,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,7 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.sem.e_health.MainActivity.changeStatusBarToWhite;
+
 
 public class DoctorActivity extends AppCompatActivity implements ContactAdapter.ItemClickListener {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -40,6 +44,7 @@ public class DoctorActivity extends AppCompatActivity implements ContactAdapter.
     FirebaseAuth mAuth;
     ContactAdapter Adapter;
     EditText searchBar ;
+    TextView tvdocName;
     RecyclerView recyclerview;
     List<Client> listData = new ArrayList<>();
 
@@ -51,6 +56,7 @@ public class DoctorActivity extends AppCompatActivity implements ContactAdapter.
         recyclerview = findViewById(R.id.RC);
         enableSwipeToDeleteAndUndo();
         searchBar = findViewById(R.id.edt_search);
+        tvdocName = findViewById(R.id.txt_doctor_name);
 
 
         Adapter = new ContactAdapter(this, listData);
@@ -60,11 +66,15 @@ public class DoctorActivity extends AppCompatActivity implements ContactAdapter.
         DatabaseReference myRef1 = database.getReference("E-Health");
         delRf = database.getReference("E-Health/Doctors/" + Sub());
 
+
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         ((SimpleItemAnimator) recyclerview.getItemAnimator()).setSupportsChangeAnimations(false);
         recyclerview.setAdapter(Adapter);
         recyclerview.setHasFixedSize(true);
         myRef.addValueEventListener(vel);
+
+        Intent intent = getIntent();
+        String docName = intent.getStringExtra("user");
 
 
         DatabaseReference Doc = myRef1.child("Doctors");
@@ -88,6 +98,15 @@ public class DoctorActivity extends AppCompatActivity implements ContactAdapter.
         });
 
 
+    }
+    public static void changeStatusBarToWhite(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //  activity.getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN| View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            activity.getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            // edited here
+            activity.getWindow().setStatusBarColor(Color.rgb(255,255,255));
+
+        }
     }
 
     private void filter(String text) {
@@ -128,6 +147,7 @@ public class DoctorActivity extends AppCompatActivity implements ContactAdapter.
         public void onCancelled(@NonNull DatabaseError databaseError) {
 
         }
+
     };
 
     private void enableSwipeToDeleteAndUndo() {

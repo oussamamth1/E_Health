@@ -21,8 +21,10 @@
             android:label="@string/title_activity_doctor"
             android:windowSoftInputMode="stateHidden|adjustResize"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Registre" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Registre"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+        <activity android:name=".MainActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

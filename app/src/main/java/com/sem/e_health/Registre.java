@@ -1,24 +1,19 @@
 package com.sem.e_health;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import static com.sem.e_health.DoctorActivity.changeStatusBarToWhite;
+
 
 public class Registre extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -27,7 +22,10 @@ public class Registre extends AppCompatActivity {
     EditText user ;
     EditText email ;
     EditText password ;
+    EditText confirmPassword;
     TextView login ;
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -39,54 +37,57 @@ public class Registre extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registre);
+        setContentView(R.layout.activity_register2);
+        changeStatusBarToWhite(this);
         login = findViewById(R.id.tc_login);
         mAuth = FirebaseAuth.getInstance();
         BtRegistre = findViewById(R.id.imageView3);
         email = findViewById(R.id.edt_email2);
         password = findViewById(R.id.edt_password2);
+        confirmPassword =findViewById(R.id.edt_password_confirm);
         user= findViewById(R.id.edt_username2);
 
-        login.setOnClickListener(ls);
-        BtRegistre.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SignUP();
 
 
+        login.setOnClickListener((v -> finish()));
+        findViewById(R.id.img_back_sign_up).setOnClickListener((v -> finish()));
 
-
-
-            }
-        });
+        BtRegistre.setOnClickListener(view -> SignUP());
 
     }
 
-    View.OnClickListener ls = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            startActivity(new Intent(Registre.this,MainActivity.class)
-                                );
 
-        }
-    };
     private void updateUI(FirebaseUser currentUser) {
 
 
         if(currentUser != null){
 
-            startActivity(new Intent(Registre.this,DoctorActivity.class));
+
             Intent intent = new Intent(Registre.this,DoctorActivity.class);
-            intent.putExtra("user",user.getText());
+            intent.putExtra("user",user.getText().toString());
             startActivity(intent);
         }
 
     }
     public void SignUP(){
-        mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+
+        String Spassword =  password.getText().toString() ;
+        String Sconfirmpassword = confirmPassword.getText().toString() ;
+
+        if ( !Sconfirmpassword.equals( Spassword)){
+
+            confirmPassword.setError("Passwords do not match !");
+
+
+        }
+        else if (user.getText().toString().length() == 0) {   user.setError("UserName is required!");}
+        else if (email.getText().toString().length() == 0){   email.setError("Email is required!");}
+        else if (password.getText().toString().length() == 0) {   password.setError("Password is required!");}
+        else {
+
+            mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+                    .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             //Log.d(TAG, "createUserWithEmail:success");
@@ -103,8 +104,9 @@ public class Registre extends AppCompatActivity {
                         }
 
                         // ...
-                    }
-                });
+                    });
+        }
+
 
 
 

@@ -1,25 +1,20 @@
 package com.sem.e_health;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import static com.sem.e_health.DoctorActivity.changeStatusBarToWhite;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -28,21 +23,27 @@ public class MainActivity extends AppCompatActivity {
     EditText email ;
     EditText password ;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         changeStatusBarToWhite(this);
+
+
         mAuth = FirebaseAuth.getInstance();
         BtLogin = findViewById(R.id.imageView33);
         email = findViewById(R.id.edt_email);
         password = findViewById(R.id.edt_password);
-
-        BtLogin.setOnClickListener(view -> Login());
+                BtLogin.setOnClickListener(view -> Login());
 
         registre = findViewById(R.id.tc_registre);
         registre.setOnClickListener(ls);
     }
+
+
+
+
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
@@ -57,19 +58,19 @@ public class MainActivity extends AppCompatActivity {
         if(currentUser != null){
 
             startActivity(new Intent(MainActivity.this,DoctorActivity.class));
-            finish();
         }
 
     }
     public void Login(){
+        if (email.getText().toString().length() == 0){   email.setError("Email is required!");}
+        else if (password.getText().toString().length() == 0) {   password.setError("Password is required!");}
+        else {
 
-        mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+            mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+                    .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                           // Log.d(TAG, "signInWithEmail:success");
+                            // Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                         } else {
@@ -79,20 +80,9 @@ public class MainActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
-
-                        // ...
-                    }
-                });
-    }
-
-    public static void changeStatusBarToWhite(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            //  activity.getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN| View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            activity.getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            // edited here
-            activity.getWindow().setStatusBarColor(Color.rgb(255,255,255));
-
+                    });
         }
     }
+
 
 }

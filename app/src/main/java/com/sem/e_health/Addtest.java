@@ -23,7 +23,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static com.sem.e_health.MainActivity.changeStatusBarToWhite;
+import static com.sem.e_health.DoctorActivity.changeStatusBarToWhite;
+
 
 public class Addtest extends AppCompatActivity {
     List<Test> testList = new ArrayList<>();
