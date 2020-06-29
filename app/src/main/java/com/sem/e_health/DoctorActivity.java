@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -156,8 +158,36 @@ public class DoctorActivity extends AppCompatActivity implements ContactAdapter.
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
 
-                final int position = viewHolder.getAdapterPosition();
-                Adapter.removeItem(position, delRf);
+
+                AlertDialog myQuittingDialogBox = new AlertDialog.Builder(DoctorActivity.this)
+                        // set message, title, and icon
+                        .setTitle("Delete")
+                        .setMessage("Do you want to Delete")
+                        .setIcon(R.drawable.delete)
+
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                final int position = viewHolder.getAdapterPosition();
+                                Adapter.removeItem(position,delRf);
+                                dialog.dismiss();
+                            }
+
+                        })
+                        .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                dialog.dismiss();
+                                finish();
+                                startActivity(getIntent());
+
+
+                            }
+                        })
+                        .create();
+                myQuittingDialogBox.setCanceledOnTouchOutside(false);
+                myQuittingDialogBox.show();
+
 
             }
 

@@ -45,7 +45,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MiHolder
         holder.phone.setText(client.getPhone());
         String ch =client.getLastName() + " " +client.getName() ;
         holder.NomPrenom.setText(ch);
-        holder.age.setText(client.getAge());
+        holder.age.setText(client.getAge() + " years");
         Picasso.get()
                 .load(client.getImageUri())
                 .into(holder.profilePhoto);
